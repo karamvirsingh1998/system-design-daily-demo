@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Replication Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f6f9fc;
+            margin: 0;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            padding: 20px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        #game-container {
+            display: none;
+            text-align: center;
+        }
+        .character {
+            display: inline-block;
+            margin: 20px;
+            font-size: 24px;
+        }
+        .story, .explanation, .interactive {
+            margin: 20px;
+            padding: 20px;
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+        canvas {
+            border: 1px solid #ccc;
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .speech-bubble {
+            border-radius: 5px;
+            background: #ffeb3b;
+            display: inline-block;
+            padding: 10px;
+            margin-top: 10px;
+            position: relative;
+        }
+        .speech-bubble:after {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent transparent #ffeb3b transparent;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Data Replication Adventure!</h1>
+    </header>
+    
+    <div id="game-container">
+        <div class="character" id="synchronous">
+            🥗 <strong>Syncy</strong>: Always on time and loves to keep things in order!
+        </div>
+        <div class="character" id="asynchronous">
+            🚀 <strong>Asyncy</strong>: Fast and flexible, but sometimes a bit unpredictable!
+        </div>
+        
+        <div class="story">
+            <h2>Story Time!</h2>
+            <p>
+                Welcome to the Data Replication Restaurant! 🍽️ Syncy and Asyncy are two chefs who handle orders differently.
+                Syncy makes sure every order is exactly the same and ready at the same time. Asyncy, on the other hand, loves to cook
+                quickly and serve orders as they are ready. Let's see how they work!
+            </p>
+            <button id="next-to-explanation">Next</button>
+        </div>
+        
+        <div class="explanation" style="display: none;">
+            <h2>Understanding Data Replication</h2>
+            <p>
+                In data replication, there are two main types: <strong>Synchronous</strong> and <strong>Asynchronous</strong>.
+                Synchronous replication ensures that all data is copied in real-time, while Asynchronous replication allows for some delay,
+                meaning data is copied at a later time.
+            </p>
+            <button id="next-to-interactive">See the Diagram!</button>
+        </div>
+        
+        <div class="interactive" style="display: none;">
+            <canvas id="replicationCanvas" width="600" height="400"></canvas>
+            <div>
+                <button id="level-up">Start Level 1!</button>
+            </div>
+            <p id="level-message"></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('next-to-explanation').addEventListener('click', function() {
+            document.querySelector('.story').style.display = 'none';
+            document.querySelector('.explanation').style.display = 'block';
+        });
+
+        document.getElementById('next-to-interactive').addEventListener('click', function() {
+            document.querySelector('.explanation').style.display = 'none';
+            document.querySelector('.interactive').style.display = 'block';
+            drawCanvas();
+        });
+
+        document.getElementById('level-up').addEventListener('click', function() {
+            document.getElementById('level-message').innerText = "Level 1 Completed! Syncy and Asyncy are now in sync!";
+            drawCanvas();
+        });
+
+        function drawCanvas() {
+            const canvas = document.getElementById('replicationCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "lightblue";
+            ctx.fillRect(50, 100, 100, 50); // Synchronous
+            ctx.fillStyle = "lightgreen";
+            ctx.fillRect(250, 100, 100, 50); // Asynchronous
+            ctx.fillStyle = "black";
+            ctx.font = "20px Arial";
+            ctx.fillText("Synchronous", 60, 130);
+            ctx.fillText("Asynchronous", 260, 130);
+
+            // Animation example
+            ctx.fillStyle = "red";
+            let x = 50;
+            let interval = setInterval(() => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = "lightblue";
+                ctx.fillRect(50, 100, 100, 50);
+                ctx.fillStyle = "lightgreen";
+                ctx.fillRect(250, 100, 100, 50);
+                ctx.fillStyle = "black";
+                ctx.fillText("Synchronous", 60, 130);
+                ctx.fillText("Asynchronous", 260, 130);
+                ctx.fillStyle = "red";
+                ctx.fillRect(x, 200, 20, 20);
+                x += 5;
+                if (x > canvas.width) {
+                    clearInterval(interval);
+                }
+            }, 100);
+        }
+
+        window.onload = function() {
+            document.getElementById('game-container').style.display = 'block';
+        };
+    </script>
+</body>
+</html>

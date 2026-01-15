@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+daily_run.log
+/tmp/
+
+# Environment variables and secrets
+.env
+.env.local
+*.key
+*.pem
+
+# Generated (optional - uncomment if you don't want to track demos)
+# demos/

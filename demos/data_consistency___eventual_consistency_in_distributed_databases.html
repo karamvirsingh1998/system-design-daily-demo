@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Consistency Adventure</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            font-size: 24px;
+        }
+        .character {
+            display: inline-block;
+            width: 100px;
+            margin: 10px;
+            transition: transform 0.2s;
+        }
+        .character:hover {
+            transform: scale(1.1);
+        }
+        .speech-bubble {
+            display: inline-block;
+            background: #fff;
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            margin: 10px;
+        }
+        .speech-bubble:after {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 20px;
+            border-width: 10px;
+            border-style: solid;
+            border-color: transparent transparent #fff transparent;
+        }
+        #canvas {
+            border: 1px solid #ccc;
+            margin-top: 20px;
+            width: 100%;
+            height: 300px;
+        }
+        .button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<header>🎮 Data Consistency Adventure 🎮</header>
+
+<div id="characters">
+    <div class="character" id="chef">
+        <img src="https://via.placeholder.com/100" alt="Chef" />
+        <div class="speech-bubble">I'm Chef Consist! Let's keep everything in order! 🍽️</div>
+    </div>
+    <div class="character" id="waiter">
+        <img src="https://via.placeholder.com/100" alt="Waiter" />
+        <div class="speech-bubble">I'm Waiter Eventual! I’ll make sure you get your food... eventually! 🍔</div>
+    </div>
+</div>
+
+<div id="story" class="hidden">
+    <h2>🌟 Our Story: The Busy Restaurant 🌟</h2>
+    <p>Welcome to the "Eventual Consistency Restaurant" where orders are taken and served by our amazing team!</p>
+    <button class="button" onclick="showExplanation()">Next</button>
+</div>
+
+<div id="explanation" class="hidden">
+    <h2>📖 Understanding Eventual Consistency</h2>
+    <p>In our restaurant, sometimes orders may take a while to get to the kitchen. But don’t worry! Eventually, everything will be served correctly!</p>
+    <button class="button" onclick="showDiagram()">Show Interactive Diagram</button>
+</div>
+
+<canvas id="canvas" class="hidden"></canvas>
+
+<script>
+    document.getElementById('characters').addEventListener('click', function() {
+        document.getElementById('story').classList.remove('hidden');
+    });
+
+    function showExplanation() {
+        document.getElementById('story').classList.add('hidden');
+        document.getElementById('explanation').classList.remove('hidden');
+    }
+
+    function showDiagram() {
+        document.getElementById('explanation').classList.add('hidden');
+        const canvas = document.getElementById('canvas');
+        canvas.classList.remove('hidden');
+        const ctx = canvas.getContext('2d');
+        
+        // Draw initial state
+        ctx.fillStyle = '#4CAF50';
+        ctx.fillRect(50, 50, 200, 50);
+        ctx.fillStyle = '#FFD700';
+        ctx.fillText('Order Taken', 90, 80);
+        
+        // Simulating animation
+        setTimeout(() => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#FFD700';
+            ctx.fillRect(50, 150, 200, 50);
+            ctx.fillStyle = '#4CAF50';
+            ctx.fillText('Order in Kitchen', 90, 180);
+        }, 2000);
+        
+        setTimeout(() => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#4CAF50';
+            ctx.fillRect(50, 250, 200, 50);
+            ctx.fillStyle = '#FFD700';
+            ctx.fillText('Order Served', 90, 280);
+        }, 4000);
+    }
+</script>
+
+</body>
+</html>

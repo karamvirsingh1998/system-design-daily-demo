@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Mesh - Sidecar Proxy Pattern</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 15px;
+        }
+        .explanation {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #555;
+        }
+        h2 {
+            color: #667eea;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .component-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        .component-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+        .steps-container {
+            margin: 20px 0;
+        }
+        .step {
+            background: #f0f0f0;
+            margin: 10px 0;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .step:hover {
+            background: #e8e8e8;
+            transform: translateX(5px);
+        }
+        .step.active {
+            background: #e3e8ff;
+            border-left-color: #764ba2;
+        }
+        .step-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+        .diagram-container {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            border: 2px solid #667eea;
+            min-height: 400px;
+            position: relative;
+        }
+        #diagramCanvas {
+            width: 100%;
+            height: 400px;
+            border-radius: 10px;
+        }
+        .controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #999;
+        }
+        .info-badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Service Mesh - Sidecar Proxy Pattern</h1>
+        <div class="explanation">The Sidecar Proxy Pattern is a key architectural design in service meshes that enhances microservices communication through the use of dedicated proxy containers. Each microservice runs alongside a sidecar proxy, intercepting all incoming and outgoing traffic to provide functionalities like load balancing, service discovery, and security. This pattern decouples the operational concerns from the application code, facilitating easier management of microservices in cloud-native environments.</div>
+        
+        <h2>Key Components</h2>
+        <div class="components-grid">
+            <div class="component-card"><strong>Microservices</strong></div><div class="component-card"><strong>Sidecar Proxy</strong></div><div class="component-card"><strong>Service Discovery</strong></div><div class="component-card"><strong>Load Balancer</strong></div><div class="component-card"><strong>Configuration Management</strong></div><div class="component-card"><strong>Traffic Management</strong></div>
+        </div>
+        
+        <h2>How It Works</h2>
+        <div class="steps-container" id="stepsContainer">
+            <div class="step" data-step="0"><span class="step-number">1</span>1. A request is made from one microservice to another.</div><div class="step" data-step="1"><span class="step-number">2</span>2. The request is intercepted by the sidecar proxy associated with the originating microservice.</div><div class="step" data-step="2"><span class="step-number">3</span>3. The sidecar proxy consults the service discovery component to locate the target microservice.</div><div class="step" data-step="3"><span class="step-number">4</span>4. The sidecar proxy applies any necessary policies (e.g., load balancing or security) before forwarding the request.</div><div class="step" data-step="4"><span class="step-number">5</span>5. The request is sent from the sidecar proxy to the target microservice's sidecar proxy.</div><div class="step" data-step="5"><span class="step-number">6</span>6. The target microservice processes the request and sends a response back to its sidecar proxy.</div><div class="step" data-step="6"><span class="step-number">7</span>7. The response travels back through the originating sidecar proxy to the original microservice.</div>
+        </div>
+        
+        <h2>Interactive Diagram</h2>
+        <div class="controls">
+            <button onclick="animateDiagram()">Animate Flow</button>
+            <button onclick="resetDiagram()">Reset</button>
+            <button onclick="highlightStep()">Highlight Current Step</button>
+        </div>
+        <div class="diagram-container">
+            <canvas id="diagramCanvas"></canvas>
+        </div>
+        
+        <div class="footer">
+            Generated on 2026-01-11 15:58:19
+        </div>
+    </div>
+    
+    <script>
+        const diagramData = {"nodes": [{"id": "serviceA", "label": "Service A", "type": "server"}, {"id": "sidecarA", "label": "Sidecar Proxy A", "type": "server"}, {"id": "sidecarB", "label": "Sidecar Proxy B", "type": "server"}, {"id": "serviceB", "label": "Service B", "type": "server"}], "connections": [{"from": "serviceA", "to": "sidecarA", "label": "Interception"}, {"from": "sidecarA", "to": "sidecarB", "label": "Forward Request"}, {"from": "sidecarB", "to": "serviceB", "label": "Forwarded Request"}, {"from": "serviceB", "to": "sidecarB", "label": "Response"}, {"from": "sidecarB", "to": "sidecarA", "label": "Response"}, {"from": "sidecarA", "to": "serviceA", "label": "Final Response"}], "flow_direction": "left-to-right"};
+        const stepsData = ["1. A request is made from one microservice to another.", "2. The request is intercepted by the sidecar proxy associated with the originating microservice.", "3. The sidecar proxy consults the service discovery component to locate the target microservice.", "4. The sidecar proxy applies any necessary policies (e.g., load balancing or security) before forwarding the request.", "5. The request is sent from the sidecar proxy to the target microservice's sidecar proxy.", "6. The target microservice processes the request and sends a response back to its sidecar proxy.", "7. The response travels back through the originating sidecar proxy to the original microservice."];
+        const canvas = document.getElementById('diagramCanvas');
+        const ctx = canvas.getContext('2d');
+        let animationFrame = null;
+        let currentStep = 0;
+        let animationTime = 0;
+        
+        // Set canvas size
+        function resizeCanvas() {
+            canvas.width = canvas.offsetWidth;
+            canvas.height = 400;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        
+        // Node positions and states
+        let nodes = [];
+        let connections = diagramData.connections || [];
+        const nodeRadius = 40;
+        const nodeColors = {
+            'server': '#667eea',
+            'client': '#48bb78',
+            'database': '#f56565',
+            'cache': '#ed8936',
+            'queue': '#9f7aea',
+            'default': '#718096'
+        };
+        
+        // Initialize node positions
+        function initNodes() {
+            const nodes_data = diagramData.nodes || [];
+            const flowDir = diagramData.flow_direction || 'left-to-right';
+            const cols = Math.ceil(Math.sqrt(nodes_data.length));
+            const rows = Math.ceil(nodes_data.length / cols);
+            
+            nodes = nodes_data.map((node, i) => {
+                let x, y;
+                if (flowDir === 'left-to-right') {
+                    x = 150 + (i % cols) * 200;
+                    y = 100 + Math.floor(i / cols) * 150;
+                } else {
+                    x = 100 + (i % cols) * 180;
+                    y = 150 + Math.floor(i / cols) * 120;
+                }
+                return {
+                    ...node,
+                    x: x,
+                    y: y,
+                    highlighted: false,
+                    pulse: 0
+                };
+            });
+        }
+        
+        // Draw diagram
+        function drawDiagram(highlightedNode = null, animatedConn = null) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw connections
+            connections.forEach((conn, i) => {
+                const fromNode = nodes.find(n => n.id === conn.from);
+                const toNode = nodes.find(n => n.id === conn.to);
+                if (!fromNode || !toNode) return;
+                
+                const isAnimated = animatedConn === i;
+                ctx.strokeStyle = isAnimated ? '#764ba2' : '#cbd5e0';
+                ctx.lineWidth = isAnimated ? 3 : 2;
+                ctx.beginPath();
+                ctx.moveTo(fromNode.x, fromNode.y);
+                ctx.lineTo(toNode.x, toNode.y);
+                ctx.stroke();
+                
+                // Draw arrow
+                const angle = Math.atan2(toNode.y - fromNode.y, toNode.x - fromNode.x);
+                const arrowX = toNode.x - (nodeRadius + 5) * Math.cos(angle);
+                const arrowY = toNode.y - (nodeRadius + 5) * Math.sin(angle);
+                ctx.fillStyle = isAnimated ? '#764ba2' : '#cbd5e0';
+                ctx.beginPath();
+                ctx.moveTo(arrowX, arrowY);
+                ctx.lineTo(arrowX - 10 * Math.cos(angle - Math.PI/6), arrowY - 10 * Math.sin(angle - Math.PI/6));
+                ctx.lineTo(arrowX - 10 * Math.cos(angle + Math.PI/6), arrowY - 10 * Math.sin(angle + Math.PI/6));
+                ctx.closePath();
+                ctx.fill();
+            });
+            
+            // Draw nodes
+            nodes.forEach(node => {
+                const isHighlighted = highlightedNode === node.id || node.highlighted;
+                const color = nodeColors[node.type] || nodeColors.default;
+                const pulse = node.pulse || 0;
+                
+                // Outer glow for highlighted
+                if (isHighlighted) {
+                    ctx.shadowBlur = 20;
+                    ctx.shadowColor = color;
+                } else {
+                    ctx.shadowBlur = 0;
+                }
+                
+                // Draw node
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                const radius = nodeRadius + pulse * 5;
+                ctx.arc(node.x, node.y, radius, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Draw border
+                ctx.strokeStyle = isHighlighted ? '#764ba2' : '#fff';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+                
+                // Draw label
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 12px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(node.label, node.x, node.y);
+            });
+        }
+        
+        // Animate diagram
+        function animateDiagram() {
+            if (animationFrame) {
+                cancelAnimationFrame(animationFrame);
+            }
+            
+            let connIndex = 0;
+            function animate() {
+                drawDiagram(null, connIndex);
+                connIndex = (connIndex + 1) % connections.length;
+                animationFrame = setTimeout(() => {
+                    animationFrame = requestAnimationFrame(animate);
+                }, 1000);
+            }
+            animate();
+            
+            // Stop after 5 seconds
+            setTimeout(() => {
+                if (animationFrame) {
+                    cancelAnimationFrame(animationFrame);
+                    animationFrame = null;
+                }
+                drawDiagram();
+            }, 5000);
+        }
+        
+        // Reset diagram
+        function resetDiagram() {
+            if (animationFrame) {
+                cancelAnimationFrame(animationFrame);
+                animationFrame = null;
+            }
+            nodes.forEach(n => {
+                n.highlighted = false;
+                n.pulse = 0;
+            });
+            currentStep = 0;
+            drawDiagram();
+        }
+        
+        // Highlight step
+        function highlightStep() {
+            const stepElement = document.querySelector(`.step[data-step="${currentStep}"]`);
+            if (stepElement) {
+                document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+                stepElement.classList.add('active');
+                
+                // Pulse effect on nodes
+                nodes.forEach(n => {
+                    n.pulse = 0;
+                });
+                
+                let pulseCount = 0;
+                const pulseInterval = setInterval(() => {
+                    nodes.forEach(n => {
+                        n.pulse = Math.sin(pulseCount * 0.5) * 3;
+                    });
+                    drawDiagram();
+                    pulseCount++;
+                    if (pulseCount > 20) {
+                        clearInterval(pulseInterval);
+                        nodes.forEach(n => {
+                            n.pulse = 0;
+                        });
+                        drawDiagram();
+                    }
+                }, 50);
+                
+                currentStep = (currentStep + 1) % stepsData.length;
+            }
+        }
+        
+        // Step click handlers
+        document.querySelectorAll('.step').forEach((stepEl, i) => {
+            stepEl.addEventListener('click', () => {
+                currentStep = i;
+                highlightStep();
+            });
+        });
+        
+        // Component card click handlers
+        document.querySelectorAll('.component-card').forEach((card, i) => {
+            card.addEventListener('click', () => {
+                if (i < nodes.length) {
+                    nodes[i].highlighted = !nodes[i].highlighted;
+                    drawDiagram();
+                }
+            });
+        });
+        
+        // Initialize
+        initNodes();
+        drawDiagram();
+    </script>
+</body>
+</html>

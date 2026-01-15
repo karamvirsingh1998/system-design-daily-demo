@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Rate Limiting: Leaky Bucket Game</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 0;
+            font-size: 24px;
+        }
+        .character {
+            display: inline-block;
+            width: 100px;
+            margin: 20px;
+            font-size: 20px;
+        }
+        .bubble {
+            display: inline-block;
+            background: #fff;
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            position: relative;
+            margin-top: 10px;
+        }
+        .bubble::after {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -10px;
+            border-width: 10px;
+            border-style: solid;
+            border-color: transparent transparent #fff transparent;
+        }
+        canvas {
+            border: 1px solid #333;
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <header>🌟 API Rate Limiting: Leaky Bucket Game 🌟</header>
+
+    <div id="characters">
+        <div class="character" id="bob">
+            <div>👨‍🍳 Bob the Chef</div>
+            <div class="bubble">Welcome to our restaurant! 🍽️</div>
+        </div>
+        <div class="character" id="luna">
+            <div>👩‍🏫 Luna the Librarian</div>
+            <div class="bubble">Hey there! Let's learn together! 📚</div>
+        </div>
+        <div class="character" id="max">
+            <div>🧙‍♂️ Max the Wizard</div>
+            <div class="bubble">Magic happens when we control flow! ✨</div>
+        </div>
+        <div class="character" id="tina">
+            <div>🤖 Tina the Robot</div>
+            <div class="bubble">I’ll help you visualize this! 🤖</div>
+        </div>
+    </div>
+
+    <div id="story">
+        <h2>🌈 Story Time!</h2>
+        <p>Imagine a busy restaurant where Bob the Chef needs to serve customers efficiently.</p>
+        <button id="next">Next</button>
+    </div>
+
+    <div id="explanation" style="display:none;">
+        <h2>📖 Explanation</h2>
+        <p>Bob has a leaky bucket to manage orders. He can only take a certain number of orders at a time (the bucket fills) and must serve them (the bucket leaks). Let's see how it works!</p>
+        <button id="showDiagram">Show Diagram</button>
+    </div>
+
+    <canvas id="leakyBucket" width="400" height="200" style="display:none;"></canvas>
+
+    <script>
+        const nextButton = document.getElementById('next');
+        const explanationDiv = document.getElementById('explanation');
+        const diagramCanvas = document.getElementById('leakyBucket');
+        const showDiagramButton = document.getElementById('showDiagram');
+
+        nextButton.onclick = () => {
+            document.getElementById('story').style.display = 'none';
+            explanationDiv.style.display = 'block';
+            document.getElementById('bob').querySelector('.bubble').textContent = "Let's manage the orders!";
+        };
+
+        showDiagramButton.onclick = () => {
+            explanationDiv.style.display = 'none';
+            diagramCanvas.style.display = 'block';
+            drawLeakyBucket();
+        };
+
+        function drawLeakyBucket() {
+            const ctx = diagramCanvas.getContext('2d');
+            let bucketLevel = 0;
+            const bucketCapacity = 100;
+            const leakRate = 1;
+
+            function animate() {
+                ctx.clearRect(0, 0, diagramCanvas.width, diagramCanvas.height);
+                ctx.fillStyle = '#8b4513'; // bucket color
+                ctx.fillRect(150, 150 - bucketLevel, 100, bucketLevel);
+                ctx.fillStyle = '#000'; // outline
+                ctx.strokeRect(150, 50, 100, 100);
+                bucketLevel = Math.max(0, bucketLevel - leakRate);
+                if (bucketLevel < bucketCapacity) {
+                    bucketLevel += Math.random() * 10; // simulate incoming orders
+                }
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+    </script>
+</body>
+</html>

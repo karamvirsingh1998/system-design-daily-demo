@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Warehousing Adventure: SCD Type 2</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+            font-size: 2em;
+        }
+        .character {
+            margin: 20px;
+            display: inline-block;
+            cursor: pointer;
+        }
+        .character img {
+            width: 100px;
+            height: 100px;
+        }
+        .story {
+            margin: 20px;
+            padding: 15px;
+            border: 2px solid #4CAF50;
+            border-radius: 10px;
+            background-color: white;
+            width: 80%;
+        }
+        #canvas {
+            border: 1px solid #4CAF50;
+            margin: 20px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .hidden {
+            display: none;
+        }
+        .speech-bubble {
+            position: relative;
+            background: #ffeb3b;
+            border-radius: .4em;
+            padding: 10px;
+            margin: 10px;
+            display: inline-block;
+        }
+        .speech-bubble:after {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent transparent #ffeb3b transparent;
+        }
+    </style>
+</head>
+<body>
+    <header>Data Warehousing Adventure: SCD Type 2</header>
+    <div id="characters">
+        <div class="character" onclick="showSpeech('chef')">
+            <img src="https://img.icons8.com/emoji/100/chef-emoji.png" alt="Chef Emoji">
+            <p>Chef 🍳</p>
+        </div>
+        <div class="character" onclick="showSpeech('librarian')">
+            <img src="https://img.icons8.com/emoji/100/book-emoji.png" alt="Librarian Emoji">
+            <p>Librarian 📚</p>
+        </div>
+        <div class="character" onclick="showSpeech('data')">
+            <img src="https://img.icons8.com/emoji/100/chart-increasing-emoji.png" alt="Data Emoji">
+            <p>Data 🗄️</p>
+        </div>
+    </div>
+    <div class="story" id="story">
+        <h2>Story Scenario</h2>
+        <p>Welcome to our little restaurant! Chef 🍳 has noticed that customers keep changing their favorite dishes! Let's see how we can keep track of these changes!</p>
+        <button onclick="nextLevel()">Continue</button>
+    </div>
+    <div class="hidden" id="explanation">
+        <h2>Understanding SCD Type 2</h2>
+        <p>In data warehousing, Slowly Changing Dimensions (SCDs) are used to manage how data changes over time. Type 2 means we keep the old data and create new records for changes!</p>
+        <button onclick="showDiagram()">Show Diagram</button>
+    </div>
+    <canvas id="canvas" width="600" height="400" class="hidden"></canvas>
+    <script>
+        let level = 0;
+        
+        function nextLevel() {
+            level++;
+            document.getElementById('story').classList.add('hidden');
+            if (level === 1) {
+                document.getElementById('explanation').classList.remove('hidden');
+            }
+        }
+
+        function showDiagram() {
+            document.getElementById('explanation').classList.add('hidden');
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            animateDiagram(ctx);
+        }
+
+        function animateDiagram(ctx) {
+            let x = 50;
+            let y = 50;
+            let width = 100;
+            let height = 50;
+
+            ctx.fillStyle = '#4CAF50';
+            ctx.fillRect(x, y, width, height);
+            ctx.fillStyle = '#ffeb3b';
+            ctx.fillRect(x + 150, y, width, height);
+            ctx.fillStyle = '#ff5733';
+            ctx.fillRect(x, y + 100, width, height);
+            ctx.fillStyle = '#c70039';
+            ctx.fillRect(x + 150, y + 100, width, height);
+            
+            ctx.fillStyle = 'black';
+            ctx.font = '16px Arial';
+            ctx.fillText("Old Record", x + 10, y + 30);
+            ctx.fillText("New Record", x + 160, y + 30);
+            ctx.fillText("Old Favorite Dish", x + 10, y + 130);
+            ctx.fillText("New Favorite Dish", x + 160, y + 130);
+            
+            // Simplified animation
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+            ctx.fillRect(x + 50, y + 50, 100, 50);
+            setTimeout(() => {
+                ctx.clearRect(x + 50, y + 50, 100, 50);
+                ctx.fillStyle = '#4CAF50';
+                ctx.fillRect(x + 50, y + 50, 100, 50);
+            }, 1000);
+        }
+
+        function showSpeech(character) {
+            let speech = "";
+            switch (character) {
+                case 'chef':
+                    speech = "Chef 🍳: We need to keep track of favorite dishes over time!";
+                    break;
+                case 'librarian':
+                    speech = "Librarian 📚: Just like books, we can have new editions!";
+                    break;
+                case 'data':
+                    speech = "Data 🗄️: SCD Type 2 allows us to track changes!";
+                    break;
+            }
+            alert(speech);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "covered": [
+    "System Design Topic - 2026-01-11",
+    "System Design Topic - 2026-01-11",
+    "System Design Topic - 2026-01-11",
+    "System Design Topic - 2026-01-11",
+    "System Design Topic - 2026-01-11",
+    "System Design Topic - 2026-01-11",
+    "System Design Topic - 2026-01-11",
+    "System Design Topic - 2026-01-11",
+    "System Design Topic - 2026-01-11",
+    "System Design Topic - 2026-01-11",
+    "System Design Topic - 2026-01-11",
+    "Dependency Injection - Constructor Injection vs. Setter Injection",
+    "Service Mesh - Sidecar Proxy Pattern",
+    "Service Discovery - DNS-Based Service Registration",
+    "API Rate Limiting - Leaky Bucket Algorithm",
+    "Data Replication - Synchronous vs. Asynchronous Replication",
+    "Data Consistency - Eventual Consistency in Distributed Databases",
+    "Data Serialization - Protocol Buffers vs. JSON",
+    "Data Warehousing - Slowly Changing Dimensions Type 2"
+  ]
+}
