@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Indexing Adventure</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+        }
+        #character-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px;
+        }
+        .character {
+            margin: 20px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .character:hover {
+            transform: scale(1.1);
+        }
+        #story, #explanation, #diagram-container {
+            display: none;
+            margin: 20px;
+            padding: 20px;
+            border: 2px solid #4CAF50;
+            border-radius: 10px;
+            background-color: white;
+        }
+        #canvas {
+            border: 1px solid #333;
+            margin-top: 20px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Database Indexing Adventure</h1>
+    <div id="character-container">
+        <div class="character" id="infoChar" onclick="showStory()">
+            🐢 Tilly the Turtle
+            <p>Slow but wise! Loves to explain things.</p>
+        </div>
+        <div class="character" id="speedChar" onclick="showExplanation()">
+            🦅 Eddie the Eagle
+            <p>Fast and sharp! Knows all about efficiency.</p>
+        </div>
+        <div class="character" id="funChar" onclick="showDiagram()">
+            🎉 Benny the Bear
+            <p>Fun-loving and energetic! Makes learning exciting.</p>
+        </div>
+    </div>
+
+    <div id="story">
+        <h2>Story: The Busy Restaurant</h2>
+        <p>Tilly the Turtle is running a busy restaurant. Every day, guests come in to order their favorite meals. Tilly needs to find out how many guests ordered 'Pasta' quickly!</p>
+        <button onclick="showExplanation()">Next</button>
+    </div>
+
+    <div id="explanation">
+        <h2>Explanation: Bitmap Indexing</h2>
+        <p>Eddie the Eagle swoops in to explain: "To quickly find which guests ordered Pasta, we can use Bitmap Indexing! This is great for low cardinality columns, like meal types. Instead of searching through all orders, we can use a bitmap!"</p>
+        <button onclick="showDiagram()">Show Diagram</button>
+    </div>
+
+    <div id="diagram-container">
+        <h2>Interactive Diagram: Bitmap Indexing</h2>
+        <canvas id="canvas" width="600" height="400"></canvas>
+        <button onclick="startAnimation()">Start Animation</button>
+    </div>
+
+    <script>
+        function showStory() {
+            document.getElementById("story").style.display = 'block';
+        }
+
+        function showExplanation() {
+            document.getElementById("story").style.display = 'none';
+            document.getElementById("explanation").style.display = 'block';
+        }
+
+        function showDiagram() {
+            document.getElementById("explanation").style.display = 'none';
+            document.getElementById("diagram-container").style.display = 'block';
+        }
+
+        function startAnimation() {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#4CAF50';
+            ctx.fillRect(20, 20, 560, 360);
+            ctx.fillStyle = '#fff';
+            ctx.font = "20px Arial";
+            ctx.fillText("Bitmap for 'Pasta':", 30, 50);
+            ctx.fillText("1 0 1 0 1 0 1", 30, 100);
+            ctx.fillText("1 = ordered, 0 = not ordered", 30, 150);
+            ctx.fillStyle = '#FF6347';
+            ctx.fillText("This is the Bitmap Index!", 30, 200);
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.getElementById("story").style.display = 'none';
+            document.getElementById("explanation").style.display = 'none';
+            document.getElementById("diagram-container").style.display = 'none';
+        });
+    </script>
+</body>
+</html>
