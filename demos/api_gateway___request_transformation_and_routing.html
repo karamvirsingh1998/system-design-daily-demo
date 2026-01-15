@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Gateway Adventure Game</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+            overflow: hidden;
+        }
+        h1 {
+            font-size: 2.5em;
+            color: #4CAF50;
+        }
+        .character {
+            display: inline-block;
+            margin: 20px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .character:hover {
+            transform: scale(1.1);
+        }
+        .story {
+            margin: 20px 0;
+            font-size: 1.2em;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .button {
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        canvas {
+            border: 1px solid #ccc;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>API Gateway Adventure Game</h1>
+    
+    <div class="character" id="transformer">
+        🛠️ <br> Transformer
+    </div>
+    <div class="character" id="router">
+        🧭 <br> Router
+    </div>
+    <div class="character" id="user">
+        👤 <br> User
+    </div>
+    <div class="character" id="service">
+        💼 <br> Service
+    </div>
+
+    <div class="story" id="storySection">
+        <p>Welcome to our restaurant! 🥳 You are the User who wants to order food. But first, you need to understand how our API Gateway helps in transforming and routing your request.</p>
+        <button class="button" id="startButton">Start Your Adventure!</button>
+    </div>
+
+    <canvas id="diagram" width="600" height="400" style="display:none;"></canvas>
+
+    <script>
+        const startButton = document.getElementById('startButton');
+        const storySection = document.getElementById('storySection');
+        const diagram = document.getElementById('diagram');
+        const ctx = diagram.getContext('2d');
+
+        startButton.addEventListener('click', () => {
+            storySection.innerHTML = "<p>Great! You want to order pizza. 🍕 But first, let's see how the API Gateway works!</p>";
+            setTimeout(() => {
+                storySection.innerHTML += '<button class="button" id="nextButton">Next</button>';
+                document.getElementById('nextButton').addEventListener('click', showDiagram);
+            }, 2000);
+        });
+
+        function showDiagram() {
+            storySection.innerHTML = "<p>The API Gateway acts like a waiter who takes your order, transforms it, and sends it to the kitchen!</p>";
+            diagram.style.display = 'block';
+            drawDiagram();
+        }
+
+        function drawDiagram() {
+            ctx.clearRect(0, 0, diagram.width, diagram.height);
+            ctx.fillStyle = '#4CAF50';
+            ctx.fillRect(50, 150, 100, 100); // API Gateway
+            ctx.fillStyle = '#f44336';
+            ctx.fillRect(250, 150, 100, 100); // Service
+
+            ctx.fillStyle = '#000';
+            ctx.font = "20px Arial";
+            ctx.fillText("API Gateway", 55, 200);
+            ctx.fillText("Service", 275, 200);
+
+            animateFlow();
+        }
+
+        function animateFlow() {
+            let xStart = 150;
+            let xEnd = 250;
+
+            const animate = () => {
+                ctx.clearRect(0, 0, diagram.width, diagram.height);
+                drawDiagram();
+                ctx.fillStyle = '#2196F3';
+                ctx.fillRect(xStart, 200, 10, 10); // Request
+                ctx.fillStyle = '#FFC107';
+                ctx.fillRect(xEnd, 200, 10, 10); // Transformed Request
+
+                if (xStart < xEnd) {
+                    xStart += 2; // Move request forward
+                } else {
+                    ctx.fillStyle = '#4CAF50';
+                    ctx.fillText("Request Received!", 180, 250);
+                }
+
+                requestAnimationFrame(animate);
+            };
+            animate();
+        }
+    </script>
+</body>
+</html>
