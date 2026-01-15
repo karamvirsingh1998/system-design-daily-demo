@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Partitioning Adventure</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            margin: 20px;
+            font-size: 36px;
+            color: #007acc;
+        }
+        #characters {
+            display: flex;
+            justify-content: center;
+            margin: 20px;
+        }
+        .character {
+            margin: 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .character:hover {
+            transform: scale(1.1);
+        }
+        #story, #explanation, #canvasContainer {
+            width: 80%;
+            margin: 20px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        #canvas {
+            border: 1px solid #007acc;
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            background-color: #007acc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #005f99;
+        }
+        .speech-bubble {
+            position: relative;
+            background: #e9eff1;
+            border-radius: 10px;
+            padding: 10px;
+            margin: 10px;
+            display: inline-block;
+        }
+        .speech-bubble:after {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent transparent #e9eff1 transparent;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Data Partitioning Adventure!</h1>
+    
+    <div id="characters">
+        <div class="character" onclick="selectCharacter('Chef Charlie')">
+            <img src="https://via.placeholder.com/100?text=👨‍🍳" alt="Chef Charlie" />
+            <p>Chef Charlie 🍽️ - Loves organizing the kitchen!</p>
+        </div>
+        <div class="character" onclick="selectCharacter('Librarian Lily')">
+            <img src="https://via.placeholder.com/100?text=📚" alt="Librarian Lily" />
+            <p>Librarian Lily 📖 - Enjoys categorizing books!</p>
+        </div>
+        <div class="character" onclick="selectCharacter('Data Dave')">
+            <img src="https://via.placeholder.com/100?text=💻" alt="Data Dave" />
+            <p>Data Dave 📊 - Obsessed with databases!</p>
+        </div>
+    </div>
+
+    <div id="story">
+        <h2>Story Time!</h2>
+        <p id="storyText">Once upon a time in a bustling restaurant, Chef Charlie struggled to find ingredients quickly.</p>
+        <button onclick="nextStep()">Next</button>
+    </div>
+
+    <div id="explanation" style="display:none;">
+        <h2>Understanding Vertical Partitioning</h2>
+        <p id="explanationText">Chef Charlie realized he could organize his ingredients better. Instead of keeping all ingredients mixed, he decided to separate them by type: vegetables, meats, and spices. This is similar to vertical partitioning in databases where data is split into smaller tables based on columns.</p>
+        <button onclick="showDiagram()">Show Diagram</button>
+    </div>
+
+    <div id="canvasContainer" style="display:none;">
+        <h2>Interactive Diagram</h2>
+        <canvas id="canvas" width="600" height="400"></canvas>
+        <button onclick="animateDiagram()">Start Animation</button>
+    </div>
+
+    <script>
+        let currentStep = 0;
+
+        function selectCharacter(character) {
+            alert(character + " is ready to help you learn!");
+        }
+
+        function nextStep() {
+            currentStep++;
+            const storyText = document.getElementById('storyText');
+            const explanation = document.getElementById('explanation');
+            if (currentStep === 1) {
+                storyText.innerHTML = "Chef Charlie decided to split his ingredients into categories to find them faster!";
+            } else if (currentStep === 2) {
+                storyText.style.display = 'none';
+                explanation.style.display = 'block';
+            }
+        }
+
+        function showDiagram() {
+            document.getElementById('explanation').style.display = 'none';
+            document.getElementById('canvasContainer').style.display = 'block';
+        }
+
+        function animateDiagram() {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            let x = 50, y = 50;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#FFCC00";
+            ctx.fillRect(x, y, 100, 50);  // Ingredients box
+            ctx.fillStyle = "#007acc";
+            ctx.fillText("Vegetables", x + 10, y + 30);
+            x += 150;
+            ctx.fillStyle = "#FF5733";
+            ctx.fillRect(x, y, 100, 50);  // Ingredients box
+            ctx.fillStyle = "#007acc";
+            ctx.fillText("Meats", x + 10, y + 30);
+            x += 150;
+            ctx.fillStyle = "#33FF57";
+            ctx.fillRect(x, y, 100, 50);  // Ingredients box
+            ctx.fillStyle = "#007acc";
+            ctx.fillText("Spices", x + 10, y + 30);
+        }
+    </script>
+</body>
+</html>
