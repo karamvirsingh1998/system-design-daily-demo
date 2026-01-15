@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Daily System Design Demo Generator
-Uses OpenAI API to discover new topics daily and create interactive UI demos
+System Design Demo Generator
+Generates interactive, game-based HTML demos for system design concepts using OpenAI API
 """
 
 import json
@@ -204,33 +204,34 @@ def create_interactive_html(topic, html_content):
     return filepath
 
 def main():
-    """Main function"""
-    print("Daily System Design Demo Generator")
+    """Main function - generates a new interactive system design demo"""
+    print("System Design Demo Generator")
     print("=" * 50)
     
     # Load topics
     topics = load_topics()
     
     # Discover new topic using OpenAI API
-    print("Discovering new topic with OpenAI API...")
+    print("Discovering new system design topic...")
     topic = discover_topic(topics)
-    print(f"Discovered topic: {topic}")
+    print(f"✓ Topic: {topic}")
     
     # Generate HTML content
-    print("Generating HTML content with OpenAI API...")
+    print("Generating interactive HTML demo...")
     html_content = generate_demo_content(topic)
     
     # Create interactive HTML file
-    print("Creating interactive HTML demo...")
+    print("Saving demo file...")
     filepath = create_interactive_html(topic, html_content)
-    print(f"Demo created: {filepath}")
+    print(f"✓ Demo created: {filepath}")
     
     # Add topic to covered list and save
     if "covered" not in topics:
         topics["covered"] = []
     topics["covered"].append(topic)
     save_topics(topics)
-    print(f"Topic '{topic}' added to covered list")
+    print(f"✓ Topic added to collection")
+    print("\n🎉 Demo generation complete!")
     
     return 0
 

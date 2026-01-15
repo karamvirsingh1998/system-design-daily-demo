@@ -22,7 +22,6 @@ Thumbs.db
 
 # Logs
 *.log
-daily_run.log
 /tmp/
 
 # Environment variables and secrets

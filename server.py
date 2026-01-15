@@ -87,12 +87,12 @@ def index():
     </head>
     <body>
         <div class="container">
-            <h1>🎯 System Design Daily Demos</h1>
-            <p class="subtitle">Interactive system design topics with dynamic visualizations</p>
+            <h1>🎯 System Design Interactive Demos</h1>
+            <p class="subtitle">Learn system design concepts through engaging, game-based interactive visualizations</p>
             
             <div class="info">
-                <strong>📌 Note:</strong> Each demo has runtime-generated animations based on the topic's diagram structure. 
-                Animations are dynamically created from the API response, not fixed templates.
+                <strong>✨ What makes these demos special:</strong> Each demo features game-based interfaces, cartoon characters, 
+                story-driven examples, and interactive animations that make learning system design concepts fun and engaging.
             </div>
             
             <h2>Available Demos</h2>
@@ -111,7 +111,7 @@ def index():
                 </a>
 """
     else:
-        html += '<p>No demos available yet. Run <code>python3 generate_demo.py</code> to create one!</p>'
+        html += '<p>No demos available yet. Run <code>python3 generator.py</code> to create one!</p>'
     
     html += """
             </div>

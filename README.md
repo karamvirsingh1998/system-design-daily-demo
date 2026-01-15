@@ -1,191 +1,139 @@
-# System Design Daily Demos
+# System Design Interactive Demos
 
-A simple program that automatically generates **interactive system design UI demos** daily using OpenAI API.
+A curated collection of **interactive, game-based HTML demos** that explain system design concepts through engaging visualizations, cartoon characters, and progressive learning experiences.
 
-## Features
+## 🎯 What is This?
 
-- **Dynamic Topic Discovery**: Uses OpenAI API to discover new system design topics daily (not from a predefined list)
-- **Interactive Visualizations**: Each demo includes an interactive HTML page with:
-  - Canvas-based animated diagrams (runtime-generated per topic)
-  - Clickable components and steps
-  - Flow animations
-  - Step-by-step highlighting
-  - Dynamic visualizations
-- **Topic Tracking**: Automatically tracks covered topics in `topics.json`
-- **Web Server**: View demos at `http://localhost:5000/system_design/{topic}`
-- **Automated Git Workflow**: Daily cron job commits and pushes changes
+Each demo is a self-contained, interactive HTML page that explains a specific system design concept through:
+- **Game-based interface** with engaging UI
+- **Cartoon characters** that guide you through concepts
+- **Story-driven examples** that start simple and build complexity
+- **Interactive animations** and visualizations
+- **Progressive learning** from beginner to advanced
 
-## Setup
+## 📚 Available Demos
 
-1. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
+Browse our collection of interactive system design demos:
 
-2. The program will automatically create a `topics.json` file on first run to track discovered topics.
+- [API Gateway - Request Transformation and Routing](demos/api_gateway___request_transformation_and_routing.html)
+- [API Rate Limiting - Leaky Bucket Algorithm](demos/api_rate_limiting___leaky_bucket_algorithm.html)
+- [Data Consistency - Eventual Consistency in Distributed Databases](demos/data_consistency___eventual_consistency_in_distributed_databases.html)
+- [Data Partitioning - Vertical Partitioning in Relational Databases](demos/data_partitioning___vertical_partitioning_in_relational_databases.html)
+- [Data Replication - Synchronous vs. Asynchronous Replication](demos/data_replication___synchronous_vs_asynchronous_replication.html)
+- [Data Serialization - Protocol Buffers vs JSON](demos/data_serialization___protocol_buffers_vs_json.html)
+- [Data Warehousing - Slowly Changing Dimensions Type 2](demos/data_warehousing___slowly_changing_dimensions_type_2.html)
+- [Dependency Injection - Constructor Injection vs Setter Injection](demos/dependency_injection___constructor_injection_vs_setter_injection.html)
+- [Service Discovery - DNS Based Service Registration](demos/service_discovery___dns_based_service_registration.html)
+- [Service Mesh - Sidecar Proxy Pattern](demos/service_mesh___sidecar_proxy_pattern.html)
 
-3. Run manually to generate a demo:
-```bash
-python3 generate_demo.py
-```
+## 🚀 Quick Start
 
-## Viewing Demos
+### View Demos Locally
 
-### Start Web Server
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/karamvirsingh1998/system-design-daily-demo.git
+   cd system-design-daily-demo
+   ```
 
-Run the Flask web server to view demos in your browser:
+2. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-```bash
-python3 server.py
-```
+3. **Start the web server:**
+   ```bash
+   python3 server.py
+   ```
 
-The server will start at: **http://localhost:5000/**
+4. **Open in browser:**
+   - Homepage: http://localhost:8080/
+   - Browse all demos or navigate directly to any demo
 
-- **Homepage**: http://localhost:5000/ (lists all demos)
-- **View a demo**: http://localhost:5000/system_design/{topic-name}
-  - Example: `http://localhost:5000/system_design/dependency_injection___constructor_injection_vs_setter_injection`
+### View Demos Directly
 
-### Animations
+You can also open any HTML file directly in your browser - each demo is completely self-contained!
 
-**Yes, animations are runtime-created per topic!** Each demo:
-- Reads diagram data from the API response (nodes, connections, flow direction)
-- Dynamically generates the canvas visualization based on that topic's structure
-- Creates animations specific to that topic's diagram
-- No fixed templates - each topic gets its own unique visualization
+## 🎮 Features
 
-## Daily Automation
+Each interactive demo includes:
 
-### Quick Setup (Recommended)
+- **🎨 Game-Based Interface**: Engaging, game-like UI that makes learning fun
+- **👥 Cartoon Characters**: Personified components with personalities that explain concepts
+- **📖 Story Examples**: Real-world scenarios (restaurants, libraries, games) that illustrate concepts
+- **🎬 Interactive Animations**: Canvas-based visualizations that animate concepts
+- **📈 Progressive Learning**: Start with simple examples, then build to advanced concepts
+- **🖱️ Interactive Elements**: Clickable components, animated flows, and step-by-step highlighting
+- **📱 Responsive Design**: Works beautifully on desktop, tablet, and mobile
 
-1. **Run the setup script** to configure GitHub repository:
-```bash
-chmod +x setup_github.sh
-./setup_github.sh
-```
-
-This script will:
-- Initialize Git repository (if needed)
-- Configure Git user
-- Set up GitHub remote
-- Create initial commit
-- Optionally push to GitHub
-
-### Manual Setup
-
-If you prefer manual setup:
-
-1. **Initialize GitHub repository:**
-```bash
-git init
-git remote add origin <your-github-repo-url>
-git branch -M main
-```
-
-2. **Make scripts executable:**
-```bash
-chmod +x daily_run.sh setup_github.sh
-```
-
-### Setting Up Daily Automation (macOS)
-
-**Recommended: Use launchd (macOS native - no permission prompts)**
-
-```bash
-./setup_launchd.sh
-```
-
-This will:
-- Install a launchd service (macOS native scheduler)
-- Schedule daily runs at 9 AM
-- Avoid permission prompts that cron jobs trigger
-- Automatically start on system boot
-
-**Alternative: Cron Job (may trigger permission prompts)**
-
-If you prefer cron:
-```bash
-crontab -e
-# Add this line:
-0 9 * * * cd /Users/karamvirsingh/Downloads/Repos/system-design-daily-demos && ./daily_run.sh >> /Users/karamvirsingh/Downloads/Repos/system-design-daily-demos/daily_run.log 2>&1
-```
-
-**View logs:**
-```bash
-tail -f daily_run.log
-```
-
-**Manage launchd service:**
-```bash
-# View status
-launchctl list | grep com.systemdesign.daily
-
-# Unload service
-launchctl unload ~/Library/LaunchAgents/com.systemdesign.daily.plist
-
-# Reload service
-launchctl unload ~/Library/LaunchAgents/com.systemdesign.daily.plist && launchctl load ~/Library/LaunchAgents/com.systemdesign.daily.plist
-```
-
-### How It Works
-
-The `daily_run.sh` script:
-1. ✅ Runs `generate_demo.py` to create a new demo
-2. ✅ Commits all changes with timestamp
-3. ✅ Pushes to GitHub automatically
-4. ✅ Logs everything to `daily_run.log`
-5. ✅ Handles errors gracefully
-
-**Note:** The script will automatically:
-- Initialize Git if not present
-- Detect the correct branch (main/master)
-- Handle push failures gracefully
-- Create log files for debugging
-
-## Project Structure
+## 🏗️ Project Structure
 
 ```
-system-design-daily-demos/
-├── generate_demo.py      # Main script with OpenAI API integration
-├── server.py             # Flask web server
-├── daily_run.sh          # Daily cron script (commits & pushes to GitHub)
-├── setup_github.sh       # GitHub repository setup script
-├── topics.json           # Topics tracking (auto-generated)
-├── daily_run.log         # Execution logs (auto-generated)
-├── demos/                # Generated interactive HTML demos
-├── requirements.txt      # Python dependencies
-└── README.md            # This file
+system-design-daily-demo/
+├── demos/              # Interactive HTML demo files
+├── server.py           # Local web server for browsing demos
+├── generator.py        # Tool for generating new demos
+├── requirements.txt    # Python dependencies
+└── README.md          # This file
 ```
 
-## How It Works
+## 🛠️ For Contributors
 
-1. **Topic Discovery**: Uses OpenAI API to discover/generate a new, granular system design topic
-2. **Content Generation**: Uses OpenAI API to generate comprehensive content including:
-   - Title and explanation
-   - Key components
-   - Step-by-step flow
-   - Diagram structure (nodes, connections, flow direction)
-3. **Interactive UI Creation**: Creates an HTML file with:
-   - Canvas-based visualizations (runtime-generated from diagram data)
-   - Interactive diagrams with animations
-   - Clickable components and steps
-   - Flow animation controls
-4. **Topic Tracking**: Adds the discovered topic to `topics.json` to avoid duplicates
+### Generating New Demos
 
-## Interactive Features
+If you'd like to generate a new demo on a specific system design topic:
 
-Each demo includes:
-- **Animated Diagram**: Canvas-based visualization with nodes and connections (dynamically generated per topic)
-- **Animate Flow Button**: Shows flow animation through connections
-- **Highlight Step Button**: Highlights current step with pulse effects
-- **Clickable Steps**: Click any step to highlight it
-- **Clickable Components**: Click component cards to highlight in diagram
-- **Responsive Design**: Works on desktop and mobile devices
+1. **Set up environment:**
+   ```bash
+   # Create .env file with your OpenAI API key
+   echo "OPENAI_API_KEY=your-key-here" > .env
+   ```
 
-## Notes
+2. **Generate a demo:**
+   ```bash
+   python3 generator.py
+   ```
 
-- Topics are discovered dynamically using OpenAI API - no predefined list
-- Each demo is a self-contained, interactive HTML file
-- **Animations are runtime-created** - each topic's diagram structure determines its visualization
-- Topics are tracked to avoid duplicates
-- The program will continue discovering new topics indefinitely
-- Access demos daily at `http://localhost:5000/system_design/{topic}`
+The generator will:
+- Discover a new, granular system design topic
+- Create an interactive, game-based HTML demo
+- Save it to the `demos/` directory
+
+## 📖 How It Works
+
+Each demo is generated with:
+1. **Topic Discovery**: AI identifies a specific, granular system design concept
+2. **Content Generation**: Creates game-based HTML with characters, stories, and explanations
+3. **Interactive Elements**: Adds animations, clickable components, and visualizations
+4. **Progressive Structure**: Organizes content from simple examples to advanced concepts
+
+## 🎓 Learning Path
+
+These demos are designed for:
+- **Beginners**: Start with story examples and simple explanations
+- **Intermediate**: Progress through interactive diagrams and visualizations
+- **Advanced**: Deep dive into technical implementations and trade-offs
+
+## 🤝 Contributing
+
+Contributions are welcome! Whether it's:
+- Improving existing demos
+- Adding new system design topics
+- Enhancing the generator tool
+- Fixing bugs or improving documentation
+
+Please feel free to open issues or submit pull requests.
+
+## 📄 License
+
+This project is open source and available for educational purposes.
+
+## 🔗 Resources
+
+- [System Design Primer](https://github.com/donnemartin/system-design-primer)
+- [High Scalability](http://highscalability.com/)
+- [System Design Interview](https://www.educative.io/courses/grokking-the-system-design-interview)
+
+---
+
+**Made with ❤️ for the system design community**
