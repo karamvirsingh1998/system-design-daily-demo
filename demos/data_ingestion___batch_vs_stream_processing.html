@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Ingestion Adventure</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        #game-header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            font-size: 2.5em;
+        }
+        #characters {
+            display: flex;
+            justify-content: center;
+            margin: 20px;
+        }
+        .character {
+            margin: 0 20px;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            cursor: pointer;
+        }
+        #story, #explanation, #diagram-container {
+            margin: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+        canvas {
+            border: 1px solid #ccc;
+            margin-top: 20px;
+        }
+        #next-level {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2em;
+        }
+        #speech-bubble {
+            position: relative;
+            display: inline-block;
+            padding: 10px;
+            background: #fff;
+            border-radius: 10px;
+            margin: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+        #speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -10px;
+            border-width: 10px;
+            border-style: solid;
+            border-color: transparent transparent #fff transparent;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-header">Data Ingestion Adventure!</div>
+    <div id="characters">
+        <div class="character" id="batchCharacter" onclick="showStory('batch')">
+            <h3>Batchy 📦</h3>
+            <p>Likes to process large data at once!</p>
+        </div>
+        <div class="character" id="streamCharacter" onclick="showStory('stream')">
+            <h3>Streamy 🌊</h3>
+            <p>Enjoys real-time data processing!</p>
+        </div>
+    </div>
+    <div id="story" style="display:none;"></div>
+    <div id="explanation" style="display:none;"></div>
+    <div id="diagram-container" style="display:none;">
+        <canvas id="diagramCanvas" width="600" height="400"></canvas>
+        <button id="next-level" style="display:none;" onclick="nextLevel()">Next Level</button>
+    </div>
+
+    <div id="speech-bubble" style="display:none;"></div>
+
+    <script>
+        function showStory(type) {
+            const storyDiv = document.getElementById('story');
+            const explanationDiv = document.getElementById('explanation');
+            const speechBubble = document.getElementById('speech-bubble');
+            speechBubble.style.display = 'none';
+
+            if (type === 'batch') {
+                storyDiv.innerHTML = "<h2>Batch Processing</h2><p>Once upon a time, Batchy the Box was in a restaurant. He loved to take a big order of food, process it all at once, and then serve it to the customers.</p>";
+                speechBubble.innerHTML = "<p>Batchy: 'I love processing large amounts of data all at once!'</p>";
+                speechBubble.style.display = 'inline-block';
+                storyDiv.style.display = 'block';
+                explanationDiv.innerHTML = '';
+                explanationDiv.style.display = 'none';
+                drawBatchDiagram();
+            } else if (type === 'stream') {
+                storyDiv.innerHTML = "<h2>Stream Processing</h2><p>Meanwhile, Streamy the Wave was in a library. He enjoyed processing information as it arrived, providing updates in real-time.</p>";
+                speechBubble.innerHTML = "<p>Streamy: 'I prefer handling data as it comes in, like a continuous stream!'</p>";
+                speechBubble.style.display = 'inline-block';
+                storyDiv.style.display = 'block';
+                explanationDiv.innerHTML = '';
+                explanationDiv.style.display = 'none';
+                drawStreamDiagram();
+            }
+        }
+
+        function drawBatchDiagram() {
+            const canvas = document.getElementById('diagramCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#ffcc00';
+            ctx.fillRect(50, 100, 500, 200);
+            ctx.fillStyle = '#4CAF50';
+            ctx.font = '20px Arial';
+            ctx.fillText('Batch Processing', 200, 50);
+            ctx.fillStyle = '#000';
+            ctx.fillText('Data Gathered in Batches', 200, 180);
+            ctx.fillText('Processed All at Once', 200, 220);
+            document.getElementById('next-level').style.display = 'inline';
+        }
+
+        function drawStreamDiagram() {
+            const canvas = document.getElementById('diagramCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#ffcc00';
+            ctx.fillRect(50, 100, 500, 200);
+            ctx.fillStyle = '#4CAF50';
+            ctx.font = '20px Arial';
+            ctx.fillText('Stream Processing', 200, 50);
+            ctx.fillStyle = '#000';
+            ctx.fillText('Data Processed in Real-Time', 200, 180);
+            ctx.fillText('Continuous Flow of Data', 200, 220);
+            document.getElementById('next-level').style.display = 'inline';
+        }
+
+        function nextLevel() {
+            const explanationDiv = document.getElementById('explanation');
+            explanationDiv.innerHTML = "<h2>Understanding the Concepts</h2><p>Batch Processing is effective for large datasets where latency is not critical. Stream Processing is best for scenarios requiring real-time insights.</p>";
+            explanationDiv.style.display = 'block';
+            document.getElementById('diagram-container').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

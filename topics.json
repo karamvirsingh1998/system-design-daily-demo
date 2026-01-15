@@ -20,6 +20,7 @@
     "Data Serialization - Protocol Buffers vs. JSON",
     "Data Warehousing - Slowly Changing Dimensions Type 2",
     "API Gateway - Request Transformation and Routing",
-    "Data Partitioning - Vertical Partitioning in Relational Databases"
+    "Data Partitioning - Vertical Partitioning in Relational Databases",
+    "Data Ingestion - Batch vs. Stream Processing"
   ]
 }
