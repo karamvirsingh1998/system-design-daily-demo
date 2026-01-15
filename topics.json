@@ -22,6 +22,7 @@
     "API Gateway - Request Transformation and Routing",
     "Data Partitioning - Vertical Partitioning in Relational Databases",
     "Data Ingestion - Batch vs. Stream Processing",
-    "Database Indexing - Bitmap Indexing for Low Cardinality Columns"
+    "Database Indexing - Bitmap Indexing for Low Cardinality Columns",
+    "Rate Limiting - Fixed Window Counter Algorithm"
   ]
 }

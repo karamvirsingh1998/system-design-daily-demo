@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rate Limiting Adventure Game</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            background: #4caf50;
+            color: white;
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+            font-size: 2em;
+        }
+        #character-section {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .character {
+            margin: 0 20px;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+        #story {
+            max-width: 600px;
+            text-align: center;
+            margin: 20px;
+            font-size: 1.2em;
+        }
+        #canvas {
+            border: 1px solid #ccc;
+            margin: 20px 0;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            margin: 20px;
+            cursor: pointer;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .speech-bubble {
+            position: relative;
+            display: inline-block;
+            background: #fff;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px;
+            max-width: 200px;
+            box-shadow: 0px 0px 5px #aaa;
+        }
+        .speech-bubble:after {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent transparent #fff transparent;
+        }
+        #level {
+            font-size: 1.5em;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<header>🕹️ Rate Limiting Adventure Game 🎮</header>
+
+<div id="character-section">
+    <div class="character" onclick="showSpeech('Chef Charlie')">👨‍🍳 Chef Charlie</div>
+    <div class="character" onclick="showSpeech('Librarian Lily')">📚 Librarian Lily</div>
+    <div class="character" onclick="showSpeech('Gamer Gary')">🎮 Gamer Gary</div>
+</div>
+
+<div id="story">
+    <h2>Welcome to the Rate Limiting Adventure!</h2>
+    <p>In a bustling city, Chef Charlie runs a popular restaurant. He wants to ensure that customers don't overwhelm him by placing too many orders at once.</p>
+    <button onclick="startGame()">Continue</button>
+</div>
+
+<div id="level"></div>
+<div class="speech-bubble" id="speech"></div>
+<canvas id="canvas" width="400" height="200"></canvas>
+
+<script>
+    let currentLevel = 0;
+
+    function startGame() {
+        currentLevel++;
+        document.getElementById('story').innerHTML = `
+            <h2>Level ${currentLevel}: Understanding Rate Limiting</h2>
+            <p>Chef Charlie has a fixed limit of 5 orders per minute. If more than 5 orders come in, he can't take them right away!</p>
+            <button onclick="showDiagram()">Show Diagram</button>
+        `;
+    }
+
+    function showDiagram() {
+        document.getElementById('speech').innerText = '';
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#4caf50";
+        ctx.fillRect(50, 50, 100, 100);
+        ctx.fillStyle = "black";
+        ctx.fillText("Orders", 80, 120);
+        
+        setTimeout(() => {
+            ctx.fillStyle = "#ff0000";
+            ctx.fillRect(200, 50, 100, 100);
+            ctx.fillStyle = "black";
+            ctx.fillText("Overloaded", 220, 120);
+        }, 2000);
+
+        document.getElementById('story').innerHTML += `<p>Chef Charlie can only handle 5 orders before he gets overloaded. Let's help him manage the orders!</p>`;
+        const button = document.createElement("button");
+        button.innerText = "Next Level!";
+        button.onclick = nextLevel;
+        document.getElementById('story').appendChild(button);
+    }
+
+    function nextLevel() {
+        currentLevel++;
+        document.getElementById('story').innerHTML = `
+            <h2>Level ${currentLevel}: Counting Orders!</h2>
+            <p>Every minute, Chef Charlie will count the incoming orders. If he reaches 5, he will pause for a while!</p>
+            <button onclick="showCounting()">Start Counting</button>
+        `;
+    }
+
+    function showCounting() {
+        let orderCount = 0;
+        const interval = setInterval(() => {
+            if (orderCount < 5) {
+                orderCount++;
+                showSpeech('Chef Charlie', `Order ${orderCount}!`);
+            } else {
+                clearInterval(interval);
+                showSpeech('Chef Charlie', `Pause! I've reached my limit!`);
+                setTimeout(() => {
+                    document.getElementById('story').innerHTML += `<p>Chef Charlie handled 5 orders! Now he will pause for a minute.</p>`;
+                }, 2000);
+            }
+        }, 1000);
+    }
+
+    function showSpeech(character, message) {
+        document.getElementById('speech').innerText = `${character} says: ${message || ''}`;
+    }
+</script>
+</body>
+</html>
