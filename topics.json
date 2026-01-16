@@ -25,6 +25,7 @@
     "Database Indexing - Bitmap Indexing for Low Cardinality Columns",
     "Rate Limiting - Fixed Window Counter Algorithm",
     "Data Ingestion - Change Data Capture using Debezium",
-    "Data Streaming - Change Data Capture with Kafka Connect"
+    "Data Streaming - Change Data Capture with Kafka Connect",
+    "Service Discovery - DNS-Based vs. Client-Side Discovery"
   ]
 }

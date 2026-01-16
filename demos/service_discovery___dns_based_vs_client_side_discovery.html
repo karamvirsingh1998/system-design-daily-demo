@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Discovery Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 0;
+            border-radius: 5px;
+        }
+        .character {
+            display: inline-block;
+            margin: 20px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .character img {
+            width: 100px;
+            height: auto;
+        }
+        .story, .explanation, .canvas-container {
+            margin: 20px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            background: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background: #45a049;
+        }
+        #canvas {
+            border: 1px solid #ccc;
+            background-color: #eaeaea;
+            width: 100%;
+            height: 300px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Service Discovery Adventure!</h1>
+</header>
+
+<div class="character" id="dnsCharacter">
+    <img src="https://img.icons8.com/color/96/000000/cloud.png" alt="DNS" />
+    <p>🧙‍♂️ Denny the DNS</p>
+    <p>A wise and speedy character!</p>
+</div>
+
+<div class="character" id="clientCharacter">
+    <img src="https://img.icons8.com/color/96/000000/computer.png" alt="Client" />
+    <p>👨‍💻 Clara the Client</p>
+    <p>A curious and resourceful character!</p>
+</div>
+
+<div class="story">
+    <h2>Story Scenario</h2>
+    <p>Welcome to the Service Discovery Adventure! Imagine you're at a magical restaurant where you need to find the best dish. Denny the DNS helps you find it by quickly pointing you to the right source, while Clara the Client tries to discover it on her own!</p>
+    <button class="button" id="startButton">Start the Adventure!</button>
+</div>
+
+<div class="explanation" id="explanation" style="display:none;">
+    <h2>Service Discovery Explained</h2>
+    <p>In our adventure, Denny uses DNS-Based Discovery to quickly find the restaurant’s menu. Meanwhile, Clara attempts Client-Side Discovery by searching for recommendations independently. Let's see how both work!</p>
+    <button class="button" id="nextButton">Continue to Interactive Diagram</button>
+</div>
+
+<div class="canvas-container" id="canvasContainer" style="display:none;">
+    <h2>Interactive Diagram</h2>
+    <canvas id="canvas"></canvas>
+    <button class="button" id="restartButton">Restart Adventure</button>
+</div>
+
+<script>
+    document.getElementById('startButton').onclick = function() {
+        document.querySelector('.story').style.display = 'none';
+        document.getElementById('explanation').style.display = 'block';
+    };
+
+    document.getElementById('nextButton').onclick = function() {
+        document.getElementById('explanation').style.display = 'none';
+        document.getElementById('canvasContainer').style.display = 'block';
+        drawCanvas();
+    };
+
+    document.getElementById('restartButton').onclick = function() {
+        location.reload();
+    };
+
+    function drawCanvas() {
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth - 40;
+        canvas.height = 300;
+
+        // Draw DNS-Based Discovery
+        ctx.fillStyle = 'lightblue';
+        ctx.fillRect(50, 50, 100, 50);
+        ctx.fillStyle = 'black';
+        ctx.fillText('DNS', 75, 80);
+        ctx.fillStyle = 'lightgreen';
+        ctx.fillRect(200, 50, 100, 50);
+        ctx.fillStyle = 'black';
+        ctx.fillText('Menu', 225, 80);
+        ctx.fillStyle = 'black';
+        ctx.beginPath();
+        ctx.moveTo(150, 75);
+        ctx.lineTo(200, 75);
+        ctx.stroke();
+
+        // Draw Client-Side Discovery
+        ctx.fillStyle = 'lightcoral';
+        ctx.fillRect(50, 150, 100, 50);
+        ctx.fillStyle = 'black';
+        ctx.fillText('Clara', 75, 180);
+        ctx.fillStyle = 'lightgreen';
+        ctx.fillRect(200, 150, 100, 50);
+        ctx.fillStyle = 'black';
+        ctx.fillText('Recommendations', 205, 180);
+        ctx.fillStyle = 'black';
+        ctx.beginPath();
+        ctx.moveTo(150, 175);
+        ctx.lineTo(200, 175);
+        ctx.stroke();
+    }
+</script>
+
+</body>
+</html>
