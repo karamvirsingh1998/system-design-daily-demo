@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Streaming Game: Change Data Capture with Kafka Connect</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: #4a90e2;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        .character {
+            display: inline-block;
+            margin: 20px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .story, .explanation, #canvas-container {
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            background: white;
+        }
+        #canvas {
+            border: 1px solid #ccc;
+            background: #e0e0e0;
+        }
+        .speech-bubble {
+            position: relative;
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 10px;
+            max-width: 200px;
+            margin: 10px auto;
+        }
+        .speech-bubble:after {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -10px;
+            border-width: 10px;
+            border-style: solid;
+            border-color: transparent transparent #ffffff transparent;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            background: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #357ab8;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Data Streaming Adventure: Kafka Connect</h1>
+</header>
+
+<section class="character-intro">
+    <h2>Meet Our Characters!</h2>
+    <div class="character" onclick="talk('chef')">
+        <h3>Chef Charlie 🍳</h3>
+        <p>A passionate chef who loves cooking up fresh data!</p>
+    </div>
+    <div class="character" onclick="talk('librarian')">
+        <h3>Librarian Lucy 📚</h3>
+        <p>The wise librarian who organizes knowledge!</p>
+    </div>
+    <div class="character" onclick="talk('robot')">
+        <h3>Robo-Rick 🤖</h3>
+        <p>A tech-savvy robot who streams data like a pro!</p>
+    </div>
+</section>
+
+<section class="story">
+    <h2>Story: The Busy Restaurant</h2>
+    <p id="story-text">In a bustling restaurant, Chef Charlie is cooking delicious meals, but he needs help keeping track of all the orders. Meanwhile, Librarian Lucy is helping him organize the menu data. Can you help them stream the data effectively?</p>
+    <button onclick="nextStep()">Next</button>
+</section>
+
+<section class="explanation" style="display:none;">
+    <h2>Understanding Data Streaming</h2>
+    <p>Data Streaming allows us to capture live data changes in real-time. Change Data Capture (CDC) with Kafka Connect helps us monitor and react to these changes efficiently. Let’s see how!</p>
+    <button onclick="showDiagram()">Show Interactive Diagram</button>
+</section>
+
+<section id="canvas-container" style="display:none;">
+    <h2>Interactive Diagram</h2>
+    <canvas id="canvas" width="600" height="400"></canvas>
+    <button onclick="restartGame()">Restart Game</button>
+</section>
+
+<script>
+    let currentStep = 0;
+
+    function talk(character) {
+        let message = "";
+        switch (character) {
+            case 'chef':
+                message = "I need to capture the orders accurately!";
+                break;
+            case 'librarian':
+                message = "Let's organize the data streams effectively!";
+                break;
+            case 'robot':
+                message = "I can help you stream the data in real-time!";
+                break;
+        }
+        alert(message);
+    }
+
+    function nextStep() {
+        currentStep++;
+        if (currentStep === 1) {
+            document.querySelector('.story').style.display = 'none';
+            document.querySelector('.explanation').style.display = 'block';
+        } else {
+            showDiagram();
+        }
+    }
+
+    function showDiagram() {
+        document.querySelector('.explanation').style.display = 'none';
+        document.getElementById('canvas-container').style.display = 'block';
+        drawDiagram();
+    }
+
+    function drawDiagram() {
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Draw a simple representation of data flow
+        context.fillStyle = '#4caf50';
+        context.fillRect(50, 150, 100, 20);
+        context.fillStyle = 'black';
+        context.fillText("Orders", 70, 145);
+        
+        context.fillStyle = '#2196f3';
+        context.fillRect(250, 150, 100, 20);
+        context.fillStyle = 'black';
+        context.fillText("Database", 270, 145);
+        
+        context.fillStyle = '#ff9800';
+        context.fillRect(450, 150, 100, 20);
+        context.fillStyle = 'black';
+        context.fillText("Kafka Connect", 460, 145);
+        
+        // Draw arrows
+        context.beginPath();
+        context.moveTo(150, 160);
+        context.lineTo(250, 160);
+        context.stroke();
+
+        context.beginPath();
+        context.moveTo(350, 160);
+        context.lineTo(450, 160);
+        context.stroke();
+        
+        // Add simple animations
+        animateDiagram();
+    }
+
+    function animateDiagram() {
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+        let x = 50;
+        const interval = setInterval(() => {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            drawDiagram();
+            context.fillStyle = 'red';
+            context.fillRect(x, 160, 30, 20);
+            x += 5;
+            if (x > 450) {
+                clearInterval(interval);
+            }
+        }, 100);
+    }
+
+    function restartGame() {
+        currentStep = 0;
+        document.querySelector('.story').style.display = 'block';
+        document.querySelector('.explanation').style.display = 'none';
+        document.getElementById('canvas-container').style.display = 'none';
+    }
+</script>
+
+</body>
+</html>
