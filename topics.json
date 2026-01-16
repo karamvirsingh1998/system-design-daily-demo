@@ -23,6 +23,7 @@
     "Data Partitioning - Vertical Partitioning in Relational Databases",
     "Data Ingestion - Batch vs. Stream Processing",
     "Database Indexing - Bitmap Indexing for Low Cardinality Columns",
-    "Rate Limiting - Fixed Window Counter Algorithm"
+    "Rate Limiting - Fixed Window Counter Algorithm",
+    "Data Ingestion - Change Data Capture using Debezium"
   ]
 }

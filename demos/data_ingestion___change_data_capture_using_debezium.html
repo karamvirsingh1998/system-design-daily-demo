@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Ingestion Adventure 🌟</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 20px;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            font-size: 2em;
+        }
+        .character {
+            display: inline-block;
+            width: 100px;
+            text-align: center;
+            margin: 20px;
+        }
+        .story, .level, .diagram {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+        }
+        canvas {
+            border: 1px solid #000;
+            display: block;
+            margin: 0 auto;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .speech-bubble {
+            position: relative;
+            display: inline-block;
+            background: #fff;
+            border-radius: 5px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            margin: 10px;
+        }
+        .speech-bubble:after {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent transparent #fff transparent;
+        }
+    </style>
+</head>
+<body>
+
+<header>Data Ingestion Adventure 🌟</header>
+
+<div class="character" id="char1">
+    <h3>🥪 Sammy</h3>
+    <p>I'm the chef! I love to cook and keep track of orders!</p>
+</div>
+<div class="character" id="char2">
+    <h3>📚 Lucy</h3>
+    <p>I'm the librarian! I manage the books and their changes!</p>
+</div>
+<div class="character" id="char3">
+    <h3>💻 Dave</h3>
+    <p>I’m the Data Engineer! I ensure smooth data flow!</p>
+</div>
+
+<div class="story">
+    <h2>Scenario: The Restaurant 🍽️</h2>
+    <p>Welcome to "Sammy's Delicious Diner"! Here, every time a customer places an order, Sammy needs to update the orders in real-time.</p>
+    <button onclick="startLevel()">Start Level 1</button>
+</div>
+
+<div class="level" id="level" style="display:none;">
+    <h2>Level 1: Order Updates</h2>
+    <p id="level-text"></p>
+    <button onclick="showDiagram()">Show Order Flow</button>
+</div>
+
+<div class="diagram" id="diagram" style="display:none;">
+    <h2>Order Flow Diagram</h2>
+    <canvas id="orderCanvas" width="600" height="400"></canvas>
+    <button onclick="nextLevel()">Next Level</button>
+</div>
+
+<script>
+    function startLevel() {
+        document.getElementById('level').style.display = 'block';
+        document.getElementById('level-text').innerText = "Sammy just received an order for a burger! Let's see how he updates his records.";
+        document.getElementById('char1').querySelector('p').innerText = "Oh no! I need to update the orders! How can I capture this change?";
+    }
+
+    function showDiagram() {
+        document.getElementById('diagram').style.display = 'block';
+        drawOrderFlow();
+        document.getElementById('char1').querySelector('p').innerText = "I can use Change Data Capture with Debezium!";
+    }
+
+    function drawOrderFlow() {
+        const canvas = document.getElementById('orderCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Draw initial state
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#ffcc00";
+        ctx.fillRect(50, 50, 100, 50);
+        ctx.fillStyle = "#000";
+        ctx.fillText("Order", 85, 80);
+        
+        // Animation for order update
+        setTimeout(() => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#00ccff";
+            ctx.fillRect(250, 50, 100, 50);
+            ctx.fillStyle = "#000";
+            ctx.fillText("Updated Order", 265, 80);
+            document.getElementById('char1').querySelector('p').innerText = "Look! The order has been updated!";
+        }, 2000);
+    }
+
+    function nextLevel() {
+        document.getElementById('level').style.display = 'none';
+        document.getElementById('diagram').style.display = 'none';
+        alert("Congratulations! You've completed Level 1! Let's move to the next level!");
+        // Add more levels or functionality as needed
+    }
+</script>
+
+</body>
+</html>
