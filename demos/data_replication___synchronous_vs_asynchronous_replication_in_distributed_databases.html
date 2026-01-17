@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Replication Adventure</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            text-align: center;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            font-size: 2em;
+        }
+        .characters {
+            display: flex;
+            justify-content: center;
+            margin: 20px;
+        }
+        .character {
+            margin: 0 20px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .character:hover {
+            transform: scale(1.1);
+        }
+        .speech-bubble {
+            display: inline-block;
+            background: #fff;
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
+            position: relative;
+            margin: 10px;
+        }
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent transparent #fff transparent;
+        }
+        #canvas {
+            border: 1px solid #333;
+            margin: 20px auto;
+            display: block;
+        }
+        .level {
+            margin: 20px 0;
+            font-size: 1.5em;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <header>Data Replication Adventure!</header>
+
+    <div class="characters">
+        <div class="character" onclick="chooseCharacter('Syncy')">
+            <img src="https://via.placeholder.com/100" alt="Syncy" />
+            <div class="speech-bubble">I'm Syncy! 🕒 I love things happening at the same time!</div>
+        </div>
+        <div class="character" onclick="chooseCharacter('Asyncy')">
+            <img src="https://via.placeholder.com/100" alt="Asyncy" />
+            <div class="speech-bubble">I'm Asyncy! 🕑 I prefer things happening at different times!</div>
+        </div>
+    </div>
+
+    <div id="story" class="story">
+        <h2>Welcome to our Restaurant!</h2>
+        <p>Imagine a busy restaurant where orders need to be replicated to the kitchen and the delivery area.</p>
+        <p>Let's learn how data replication works in a fun way!</p>
+        <button onclick="startLevel()">Start Level 1</button>
+    </div>
+
+    <div id="level1" class="level" style="display:none;">
+        <h2>Level 1: Understanding Replication</h2>
+        <p>We have two ways to replicate orders: <strong>Synchronous</strong> and <strong>Asynchronous</strong>.</p>
+        <canvas id="canvas" width="600" height="400"></canvas>
+        <button onclick="showDiagram()">Show Diagram</button>
+    </div>
+
+    <script>
+        let characterChosen = false;
+
+        function chooseCharacter(character) {
+            characterChosen = true;
+            const message = character === 'Syncy' ? "Great choice! Let's learn about Synchronous Replication!" : "Awesome! Let's explore Asynchronous Replication!";
+            alert(message);
+            document.getElementById('story').style.display = 'none';
+            document.getElementById('level1').style.display = 'block';
+        }
+
+        function startLevel() {
+            if (!characterChosen) {
+                alert("Please choose a character first!");
+                return;
+            }
+            document.getElementById('story').style.display = 'none';
+            document.getElementById('level1').style.display = 'block';
+        }
+
+        function showDiagram() {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw Synchronous Replication
+            ctx.fillStyle = "#4CAF50";
+            ctx.fillRect(50, 150, 100, 50);
+            ctx.fillStyle = "#2196F3";
+            ctx.fillRect(250, 150, 100, 50);
+            ctx.fillStyle = "black";
+            ctx.fillText("Order", 75, 180);
+            ctx.fillText("Kitchen", 270, 180);
+
+            // Draw connection
+            ctx.beginPath();
+            ctx.moveTo(150, 175);
+            ctx.lineTo(250, 175);
+            ctx.stroke();
+
+            // Draw Asynchronous Replication
+            ctx.fillStyle = "#FFC107";
+            ctx.fillRect(450, 150, 100, 50);
+            ctx.fillStyle = "black";
+            ctx.fillText("Delivery", 475, 180);
+
+            // Draw connection
+            ctx.beginPath();
+            ctx.moveTo(350, 175);
+            ctx.lineTo(450, 175);
+            ctx.stroke();
+
+            // Add text
+            ctx.fillText("Synchronous: Both parts receive the order at the same time.", 20, 50);
+            ctx.fillText("Asynchronous: Delivery gets the order later.", 20, 100);
+        }
+    </script>
+</body>
+</html>

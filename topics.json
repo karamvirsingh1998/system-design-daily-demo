@@ -26,6 +26,7 @@
     "Rate Limiting - Fixed Window Counter Algorithm",
     "Data Ingestion - Change Data Capture using Debezium",
     "Data Streaming - Change Data Capture with Kafka Connect",
-    "Service Discovery - DNS-Based vs. Client-Side Discovery"
+    "Service Discovery - DNS-Based vs. Client-Side Discovery",
+    "Data Replication - Synchronous vs. Asynchronous Replication in Distributed Databases"
   ]
 }
