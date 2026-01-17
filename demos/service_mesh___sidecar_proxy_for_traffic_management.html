@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Mesh Adventure Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            text-align: center;
+        }
+
+        #game-header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            font-size: 24px;
+        }
+
+        .character {
+            display: inline-block;
+            width: 100px;
+            margin: 20px;
+            cursor: pointer;
+        }
+
+        .speech-bubble {
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 10px;
+            position: relative;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .speech-bubble:after {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent transparent #fff transparent;
+        }
+
+        #canvas-container {
+            display: none;
+            margin: 20px auto;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            width: 80%;
+            height: 400px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .level {
+            display: none;
+        }
+
+        .active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="game-header">🌐 Service Mesh Adventure Game 🌐</div>
+
+    <div id="character-intro">
+        <h2>Meet the Characters!</h2>
+        <div class="character" id="proxy">
+            <img src="https://via.placeholder.com/100" alt="Proxy" />
+            <div class="speech-bubble">👾 Hi! I'm Proxy, your traffic guide!</div>
+        </div>
+        <div class="character" id="serviceA">
+            <img src="https://via.placeholder.com/100" alt="Service A" />
+            <div class="speech-bubble">🍽️ I'm Service A, your chef!</div>
+        </div>
+        <div class="character" id="serviceB">
+            <img src="https://via.placeholder.com/100" alt="Service B" />
+            <div class="speech-bubble">🥗 I'm Service B, your waiter!</div>
+        </div>
+    </div>
+
+    <div id="story-section" class="level active">
+        <h2>Story: The Restaurant</h2>
+        <p>Welcome to our restaurant! Service A (the chef) prepares the food, while Service B (the waiter) serves it to the customers. But oh no! They need to communicate better!</p>
+        <button id="next1">Next</button>
+    </div>
+
+    <div id="explanation-section" class="level">
+        <h2>Understanding Service Mesh</h2>
+        <p>In our restaurant, Proxy is like a sidecar proxy in a service mesh. It helps manage traffic between services A and B!</p>
+        <button id="next2">Next</button>
+    </div>
+
+    <div id="canvas-container">
+        <canvas id="trafficCanvas" width="600" height="300"></canvas>
+    </div>
+
+    <script>
+        const next1Button = document.getElementById('next1');
+        const next2Button = document.getElementById('next2');
+        const storySection = document.getElementById('story-section');
+        const explanationSection = document.getElementById('explanation-section');
+        const canvasContainer = document.getElementById('canvas-container');
+
+        next1Button.onclick = function () {
+            storySection.classList.remove('active');
+            explanationSection.classList.add('active');
+        };
+
+        next2Button.onclick = function () {
+            explanationSection.classList.remove('active');
+            canvasContainer.style.display = 'block';
+            drawCanvas();
+        };
+
+        function drawCanvas() {
+            const canvas = document.getElementById('trafficCanvas');
+            const context = canvas.getContext('2d');
+
+            // Draw services
+            context.fillStyle = '#ffcc00';
+            context.fillRect(50, 150, 100, 50);
+            context.fillStyle = '#ff6666';
+            context.fillRect(450, 150, 100, 50);
+
+            // Draw Proxy
+            context.fillStyle = '#66ccff';
+            context.fillRect(250, 150, 100, 50);
+
+            // Draw arrows
+            context.fillStyle = 'black';
+            context.beginPath();
+            context.moveTo(150, 175);
+            context.lineTo(250, 175);
+            context.lineTo(245, 170);
+            context.moveTo(250, 175);
+            context.lineTo(245, 180);
+            context.stroke();
+
+            context.beginPath();
+            context.moveTo(350, 175);
+            context.lineTo(450, 175);
+            context.lineTo(445, 170);
+            context.moveTo(450, 175);
+            context.lineTo(445, 180);
+            context.stroke();
+        }
+    </script>
+</body>
+
+</html>
