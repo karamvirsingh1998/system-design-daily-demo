@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Lake Adventure: Delta Lake Quest</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #e0f7fa;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        header {
+            background-color: #00796b;
+            color: white;
+            padding: 20px;
+            font-size: 2em;
+        }
+        #characters {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .character {
+            margin: 0 20px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .character:hover {
+            transform: scale(1.1);
+        }
+        #story, #explanation, #interactive {
+            display: none;
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #00796b;
+            border-radius: 10px;
+            background-color: white;
+        }
+        #canvas {
+            border: 1px solid #00796b;
+            margin: 20px auto;
+            display: none;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #00796b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #004d40;
+        }
+    </style>
+</head>
+<body>
+    <header>Data Lake Adventure: Delta Lake Quest</header>
+    <div id="characters">
+        <div class="character" onclick="selectCharacter('DataDan')">
+            <h2>Data Dan 🧑‍💻</h2>
+            <p>A data enthusiast who loves to explore!</p>
+        </div>
+        <div class="character" onclick="selectCharacter('LakeLisa')">
+            <h2>Lake Lisa 💧</h2>
+            <p>The guardian of the Data Lake, wise and calm.</p>
+        </div>
+        <div class="character" onclick="selectCharacter('TransactionTom')">
+            <h2>Transaction Tom 💼</h2>
+            <p>A transactional wizard ensuring data integrity!</p>
+        </div>
+        <div class="character" onclick="selectCharacter('DeltaDaisy')">
+            <h2>Delta Daisy 🌼</h2>
+            <p>Creative and quick, she loves ACID transactions!</p>
+        </div>
+    </div>
+    <div id="story">
+        <h2>Story: The Restaurant Data Lake</h2>
+        <p>Welcome to "The Hungry Data," a restaurant that serves delicious data dishes. The chefs need a reliable way to store and manage their ingredients (data) in the data lake. Let's help them organize it!</p>
+        <button onclick="nextStep('explanation')">Continue</button>
+    </div>
+    <div id="explanation">
+        <h2>Understanding Delta Lake</h2>
+        <p>Delta Lake is like a magical pantry that ensures all ingredients are fresh and organized! It uses ACID transactions to keep everything in order. Let's explore how this works! </p>
+        <button onclick="nextStep('interactive')">Show Diagram</button>
+    </div>
+    <div id="interactive">
+        <canvas id="canvas" width="600" height="400"></canvas>
+        <button onclick="playAnimation()">Start Animation</button>
+        <button onclick="endGame()">Finish Adventure</button>
+    </div>
+
+    <script>
+        let selectedCharacter = null;
+
+        function selectCharacter(character) {
+            selectedCharacter = character;
+            document.getElementById('characters').style.display = 'none';
+            document.getElementById('story').style.display = 'block';
+        }
+
+        function nextStep(section) {
+            document.getElementById('story').style.display = 'none';
+            document.getElementById('explanation').style.display = 'none';
+            document.getElementById('interactive').style.display = 'none';
+            document.getElementById(section).style.display = 'block';
+        }
+
+        function playAnimation() {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#00796b';
+            ctx.fillRect(50, 150, 100, 50);
+            ctx.fillStyle = '#e0f7fa';
+            ctx.fillRect(200, 150, 100, 50);
+            ctx.fillStyle = '#fff';
+            ctx.font = "20px Arial";
+            ctx.fillText("Data Lake", 55, 180);
+            ctx.fillText("Delta Lake", 205, 180);
+            ctx.fillText("ACID Transactions", 100, 100);
+            ctx.fillText("Ensure Reliability!", 100, 50);
+            ctx.fillStyle = "#ffcc00";
+            ctx.fillRect(50, 220, 250, 10);
+            ctx.fillStyle = "#ff5722";
+            ctx.fillText("Fresh Data 🌟", 100, 250);
+        }
+
+        function endGame() {
+            alert("Congratulations! You've completed the adventure in understanding Delta Lake!");
+            location.reload();
+        }
+        
+        // Start with an introduction
+        document.getElementById('characters').style.display = 'flex';
+    </script>
+</body>
+</html>
