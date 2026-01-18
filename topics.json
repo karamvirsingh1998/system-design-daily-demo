@@ -29,6 +29,7 @@
     "Service Discovery - DNS-Based vs. Client-Side Discovery",
     "Data Replication - Synchronous vs. Asynchronous Replication in Distributed Databases",
     "Service Mesh - Sidecar Proxy for Traffic Management",
-    "Data Lake Architecture - Delta Lake for ACID Transactions"
+    "Data Lake Architecture - Delta Lake for ACID Transactions",
+    "Data Replication - Multi-Master Replication with Conflict Resolution"
   ]
 }

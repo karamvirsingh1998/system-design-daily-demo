@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Replication Adventure!</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            background-color: #4CAF50;
+            padding: 10px;
+            border-radius: 10px;
+            color: white;
+            font-size: 2em;
+        }
+        #character-section {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        .character {
+            text-align: center;
+        }
+        .character img {
+            width: 75px;
+            height: 75px;
+        }
+        #story {
+            margin: 20px 0;
+            padding: 10px;
+            border: 1px solid #4CAF50;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+        #canvas {
+            border: 1px solid #4CAF50;
+            margin: 20px auto;
+            background-color: #fff;
+        }
+        #controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #message {
+            text-align: center;
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<header>Data Replication Adventure!</header>
+
+<div id="character-section">
+    <div class="character" id="char1">
+        <img src="https://via.placeholder.com/75/FF5733/FFFFFF?text=🍔" alt="Chef Charlie">
+        <p>Chef Charlie (🍔) - Loves cooking and sharing recipes!</p>
+    </div>
+    <div class="character" id="char2">
+        <img src="https://via.placeholder.com/75/33C1FF/FFFFFF?text=📚" alt="Librarian Lucy">
+        <p>Librarian Lucy (📚) - Keeps everything organized and loves books!</p>
+    </div>
+</div>
+
+<div id="story">
+    <p>Welcome to the world of Chef Charlie and Librarian Lucy! 🍔📚</p>
+    <p>Today, they are about to face a challenge: sharing their delicious recipes and books across multiple kitchens and libraries!</p>
+</div>
+
+<div id="controls">
+    <button onclick="startGame()">Start the Adventure!</button>
+</div>
+
+<canvas id="canvas" width="600" height="400"></canvas>
+<div id="message"></div>
+
+<script>
+    let level = 0;
+
+    function startGame() {
+        level++;
+        document.getElementById('story').innerHTML = `<p>Level ${level}: Chef Charlie has a new recipe!</p>`;
+        document.getElementById('message').innerHTML = '';
+        drawCanvas();
+    }
+
+    function drawCanvas() {
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = "#4CAF50";
+        ctx.fillRect(50, 50, 100, 100); // Kitchen
+        ctx.fillRect(450, 50, 100, 100); // Library
+
+        ctx.fillStyle = "#FF5733";
+        ctx.fillText("Kitchen", 70, 45);
+        ctx.fillText("Library", 470, 45);
+
+        if (level === 1) {
+            ctx.fillStyle = "#000";
+            ctx.fillText("Chef Charlie shares a recipe!", 50, 200);
+            ctx.fillText("But Librarian Lucy has a different version!", 50, 240);
+        } else if (level === 2) {
+            ctx.fillStyle = "#000";
+            ctx.fillText("Conflict arises! Which recipe is correct?", 50, 200);
+            ctx.fillText("Let's resolve this conflict!", 50, 240);
+        } else {
+            ctx.fillStyle = "#000";
+            ctx.fillText("Both recipes are combined!", 50, 200);
+            ctx.fillText("Data Replication successful! 🎉", 50, 240);
+        }
+
+        setTimeout(() => {
+            if (level < 3) {
+                document.getElementById('message').innerHTML = `${level === 1 ? "Chef Charlie and Librarian Lucy are confused!" : "They need to come together!"}`;
+            }
+        }, 1500);
+    }
+</script>
+
+</body>
+</html>
