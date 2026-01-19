@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Gateway Adventure!</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            font-size: 2em;
+            border-bottom: 5px solid #333;
+        }
+        .character {
+            display: inline-block;
+            margin: 20px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .character img {
+            width: 100px;
+            height: 100px;
+        }
+        .speech-bubble {
+            background: #fff;
+            border-radius: 10px;
+            padding: 10px;
+            position: relative;
+            display: inline-block;
+            margin: 10px;
+        }
+        .speech-bubble:after {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent transparent #fff transparent;
+        }
+        #canvas {
+            border: 1px solid #333;
+            margin: 20px auto;
+            display: block;
+        }
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 1em;
+            border-radius: 5px;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        #story {
+            display: none;
+            text-align: center;
+        }
+        #progression {
+            display: none;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>API Gateway Adventure!</header>
+    <div id="characters">
+        <div class="character" onclick="showCharacterSpeech('transformation')">
+            <img src="https://via.placeholder.com/100/00ff00/000000?text=🔄" alt="Transformo">
+            <h3>Transformo</h3>
+            <p>The Request Transformer</p>
+        </div>
+        <div class="character" onclick="showCharacterSpeech('routing')">
+            <img src="https://via.placeholder.com/100/0000ff/ffffff?text=🔄" alt="Router">
+            <h3>Routeroo</h3>
+            <p>The Routing Expert</p>
+        </div>
+        <div class="character" onclick="showCharacterSpeech('user')">
+            <img src="https://via.placeholder.com/100/ffcc00/000000?text=👤" alt="User">
+            <h3>Usery</h3>
+            <p>The API User</p>
+        </div>
+    </div>
+
+    <div id="story">
+        <h2>Our Story</h2>
+        <p>Welcome to the API Gateway Adventure! Our friends Transformo and Routeroo are on a mission to help Usery get the right information from a restaurant API!</p>
+        <button class="button" onclick="nextStep()">Let's Go!</button>
+    </div>
+
+    <div id="progression">
+        <h2>Level 1: Request Transformation</h2>
+        <p>Transformo is here to change our requests. Let's see how!</p>
+        <button class="button" onclick="showDiagram()">Show Diagram</button>
+    </div>
+
+    <canvas id="canvas" width="600" height="400"></canvas>
+
+    <div id="speech" class="speech-bubble"></div>
+
+    <script>
+        document.getElementById('story').style.display = "block";
+
+        function nextStep() {
+            document.getElementById('story').style.display = "none";
+            document.getElementById('progression').style.display = "block";
+        }
+
+        function showCharacterSpeech(character) {
+            const speeches = {
+                transformation: "Hi! I'm Transformo! I change the way requests look before sending them to the API.",
+                routing: "Hello there! I'm Routeroo! I help route requests to the right service!",
+                user: "Hey! I'm Usery! I just want to get the data I need!"
+            };
+            document.getElementById('speech').innerText = speeches[character];
+        }
+
+        function showDiagram() {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw API Gateway
+            ctx.fillStyle = "#4CAF50";
+            ctx.fillRect(250, 50, 100, 50);
+            ctx.fillStyle = "white";
+            ctx.fillText("API Gateway", 260, 80);
+
+            // Draw arrows
+            ctx.beginPath();
+            ctx.moveTo(200, 75);
+            ctx.lineTo(250, 75);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(350, 75);
+            ctx.lineTo(400, 75);
+            ctx.stroke();
+
+            // Draw Request Transformation
+            ctx.fillStyle = "#00ff00";
+            ctx.fillRect(50, 200, 150, 50);
+            ctx.fillStyle = "white";
+            ctx.fillText("Request Transform", 65, 230);
+
+            // Draw Routing
+            ctx.fillStyle = "#0000ff";
+            ctx.fillRect(250, 200, 150, 50);
+            ctx.fillStyle = "white";
+            ctx.fillText("Routing", 295, 230);
+
+            ctx.fillStyle = "#ffcc00";
+            ctx.fillRect(450, 200, 150, 50);
+            ctx.fillStyle = "white";
+            ctx.fillText("Service", 490, 230);
+
+            // Draw arrows
+            ctx.beginPath();
+            ctx.moveTo(250, 100);
+            ctx.lineTo(125, 200);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(200, 250);
+            ctx.lineTo(250, 250);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(400, 250);
+            ctx.lineTo(450, 250);
+            ctx.stroke();
+        }
+    </script>
+</body>
+</html>

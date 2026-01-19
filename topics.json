@@ -30,6 +30,7 @@
     "Data Replication - Synchronous vs. Asynchronous Replication in Distributed Databases",
     "Service Mesh - Sidecar Proxy for Traffic Management",
     "Data Lake Architecture - Delta Lake for ACID Transactions",
-    "Data Replication - Multi-Master Replication with Conflict Resolution"
+    "Data Replication - Multi-Master Replication with Conflict Resolution",
+    "API Gateway - Request Transformation and Routing Rules"
   ]
 }
