@@ -31,6 +31,7 @@
     "Service Mesh - Sidecar Proxy for Traffic Management",
     "Data Lake Architecture - Delta Lake for ACID Transactions",
     "Data Replication - Multi-Master Replication with Conflict Resolution",
-    "API Gateway - Request Transformation and Routing Rules"
+    "API Gateway - Request Transformation and Routing Rules",
+    "Data Synchronization - Conflict-Free Replicated Data Types (CRDTs)"
   ]
 }

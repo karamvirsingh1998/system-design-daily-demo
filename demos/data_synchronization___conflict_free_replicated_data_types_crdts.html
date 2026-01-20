@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRDT Adventure Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        .character {
+            display: inline-block;
+            margin: 20px;
+            cursor: pointer;
+        }
+        .speech-bubble {
+            display: inline-block;
+            position: relative;
+            background: #fff;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            margin-top: 10px;
+        }
+        .speech-bubble:after {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent transparent #fff transparent;
+        }
+        #canvas {
+            border: 1px solid #333;
+            margin-top: 20px;
+            display: none;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .hidden {
+            display: none;
+        }
+        .level {
+            margin-top: 30px;
+            font-size: 1.5em;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>CRDT Adventure Game</h1>
+
+    <div id="characters">
+        <div class="character" onclick="talk('chef')">
+            <img src="https://via.placeholder.com/100" alt="Chef Emoji" />
+            <div>🍳 Chef Charlie</div>
+        </div>
+        <div class="character" onclick="talk('librarian')">
+            <img src="https://via.placeholder.com/100" alt="Librarian Emoji" />
+            <div>📚 Librarian Lucy</div>
+        </div>
+        <div class="character" onclick="talk('gamer')">
+            <img src="https://via.placeholder.com/100" alt="Gamer Emoji" />
+            <div>🎮 Gamer Gary</div>
+        </div>
+    </div>
+
+    <div id="story" class="hidden">
+        <p>Welcome to the CRDT Adventure! Chef Charlie and Librarian Lucy have a restaurant and a library that need to share data about their customers and books. Let's help them sync their data without conflicts!</p>
+        <button onclick="nextLevel()">Next</button>
+    </div>
+
+    <div id="explanation" class="hidden">
+        <p>When Chef Charlie updates the menu and Librarian Lucy updates the book list at the same time, how do they ensure their data remains consistent?</p>
+        <button onclick="showDiagram()">Show Diagram</button>
+    </div>
+
+    <canvas id="canvas" width="600" height="400"></canvas>
+
+    <div id="level" class="level hidden">
+        <p>Level 1: Data Synchronization!</p>
+        <button onclick="nextLevel()">Continue</button>
+    </div>
+
+    <div id="feedback" class="hidden"></div>
+
+    <script>
+        let currentStage = 0;
+
+        function talk(character) {
+            let message = '';
+            switch(character) {
+                case 'chef':
+                    message = "Hi, I'm Chef Charlie! I need to update my menu!";
+                    break;
+                case 'librarian':
+                    message = "Hello! I'm Librarian Lucy! I need to update the book list!";
+                    break;
+                case 'gamer':
+                    message = "Hey there! I'm Gamer Gary! Let's sync this data!";
+                    break;
+            }
+            showSpeechBubble(message);
+        }
+
+        function showSpeechBubble(message) {
+            const bubble = document.createElement('div');
+            bubble.className = 'speech-bubble';
+            bubble.innerText = message;
+            document.body.appendChild(bubble);
+            setTimeout(() => {
+                bubble.remove();
+            }, 3000);
+        }
+
+        function nextLevel() {
+            currentStage++;
+            if (currentStage === 1) {
+                document.getElementById('characters').classList.add('hidden');
+                document.getElementById('story').classList.remove('hidden');
+            } else if (currentStage === 2) {
+                document.getElementById('story').classList.add('hidden');
+                document.getElementById('explanation').classList.remove('hidden');
+            } else if (currentStage === 3) {
+                document.getElementById('explanation').classList.add('hidden');
+                document.getElementById('level').classList.remove('hidden');
+                drawDiagram();
+            }
+        }
+
+        function showDiagram() {
+            document.getElementById('canvas').style.display = 'block';
+        }
+
+        function drawDiagram() {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'lightblue';
+            ctx.fillRect(50, 50, 100, 100);
+            ctx.fillStyle = 'lightgreen';
+            ctx.fillRect(200, 50, 100, 100);
+            ctx.fillStyle = 'black';
+            ctx.fillText('Chef Data', 70, 120);
+            ctx.fillText('Library Data', 220, 120);
+            animateDataSync();
+        }
+
+        function animateDataSync() {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            let x = 70;
+            const interval = setInterval(() => {
+                ctx.clearRect(50, 50, 100, 100);
+                ctx.clearRect(200, 50, 100, 100);
+                ctx.fillStyle = 'lightblue';
+                ctx.fillRect(50, 50, 100, 100);
+                ctx.fillStyle = 'lightgreen';
+                ctx.fillRect(200, 50, 100, 100);
+                ctx.fillStyle = 'black';
+                ctx.fillText('Chef Data', 70, 120);
+                ctx.fillText('Library Data', 220, 120);
+                ctx.fillStyle = 'yellow';
+                ctx.beginPath();
+                ctx.arc(x, 100, 10, 0, Math.PI * 2);
+                ctx.fill();
+                x += 5;
+                if (x > 220) {
+                    clearInterval(interval);
+                }
+            }, 100);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('characters').classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>
